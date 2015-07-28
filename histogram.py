@@ -7,11 +7,12 @@ import matplotlib.pyplot as plt
 import os
 
 parser = argparse.ArgumentParser()
-parser.add_argument('file')
+parser.add_argument('--file',default='%_differences_AVG.dat')
 parser.add_argument('--path', default=None, help='if file is not in same directory')
 args = parser.parse_args()
 
-print os.getcwd()
+cwd = os.getcwd()
+cwd = cwd.replace('new_output_data','')
 
 print 'loading data'
 data = np.loadtxt(args.file)
@@ -38,7 +39,7 @@ for t in xrange(len(data)):
         bignumin.append(t)
         bignums.append(data[t])
 count.append(len(bignums))
-f = open('NEWabove_200_index.dat','w+')
+f = open('above_200_index.dat','w+')
 for i in xrange(len(bignumin)):
     f.write(str(bignumin[i]))
     f.write('\n')
@@ -49,16 +50,16 @@ for t in xrange(len(data)):
     if data[t] == 100.000:
         at_100in.append(t)
         at_100.append(data[t])
-f = open('NEWat_100_index.dat','w+')
+f = open('at_100_index.dat','w+')
 for i in xrange(len(at_100)):
     f.write(str(at_100in[i]))
     f.write('\n')
 
-os.chdir('/dascratch/mjh9/output_files/bootJac_160_02015_Jul_13/plots')
+os.chdir('%s/plots'%cwd)
 fig = plt.figure()
-ax = fig.add_subplot(111,title='NEW AVG % Diff Histogram')
+ax = fig.add_subplot(111,title='AVG % Diff Histogram')
 for i in xrange(len(count)):
     ax.bar(i,count[i],width=1)
-fig.savefig('NEWAVG_%_differences_histogram.png')
+fig.savefig('AVG_%_differences_histogram.png')
 
 exit()

@@ -4,14 +4,19 @@ import os
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--brs',default='1000')
+args = parser.parse_args()
 
 cwd = os.getcwd()
 print 'loading files'
-original = np.loadtxt('originalJac_T160_01000_resamples.txt')
-average = np.loadtxt('NEWavgJac_T160_01000_resamples.txt')
+original = np.loadtxt('originalJac_T160_0'+args.brs+'_resamples.txt')
+average = np.loadtxt('avgJac_T160_0'+args.brs+'_resamples.txt')
 os.chdir('%s/new_output_data'%(cwd))
-at_100_in = np.loadtxt('NEWat_100_index.dat')
-above_200_in = np.loadtxt('NEWabove_200_index.dat')
+at_100_in = np.loadtxt('at_100_index.dat')
+above_200_in = np.loadtxt('above_200_index.dat')
 
 original = original.tolist()
 average = average.tolist()
@@ -19,7 +24,7 @@ at_100_in = at_100_in.tolist()
 above_200_in = above_200_in.tolist()
 
 print 'determining numbers that present 100% difference'
-f = open('NEWat_100_values.dat','w+')
+f = open('at_100_values.dat','w+')
 f.write('index (original, average)\n')
 for i in xrange(len(original)):
     for k in xrange(len(at_100_in)):
@@ -27,14 +32,14 @@ for i in xrange(len(original)):
             f.write('%s (%s, %s)\n'%(i,original[i],average[i]))
 
 print 'determining numbers that present greater than 200% difference'
-f = open('NEWabove_200_values.dat','w+')
+f = open('above_200_values.dat','w+')
 f.write('index (original, average)\n')
 for i in xrange(len(original)):
     for k in xrange(len(above_200_in)):
         if i == above_200_in[k]:
             f.write('%s (%s, %s)\n'%(i,original[i],average[i]))
 
-originalzeros = open('NEWoriginalzeroes.dat','w+')
+originalzeros = open('originalzeroes.dat','w+')
 for i in xrange(len(original)):
     if original[i] == 0:
         originalzeros.write('%s\n'%i)
